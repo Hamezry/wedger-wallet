@@ -1,14 +1,14 @@
-import { TransactionTable } from "../reusable-table";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const columns = [
-  { key: "date", label: "Date", sortable: true },
-  { key: "remark", label: "Remark" },
-  { key: "amount", label: "Amount" },
-  { key: "currency", label: "Currency" },
-  { key: "type", label: "Type" },
-];
+export type Transaction = {
+  date: string;
+  remark: string;
+  amount: string;
+  currency: string;
+  type: "Credit" | "Debit";
+};
 
-const sampleData = [
+const sampleData: Transaction[] = [
   {
     date: "2023-10-01",
     remark: "Salary",
@@ -72,18 +72,19 @@ const sampleData = [
     currency: "USD",
     type: "Debit",
   },
+  {
+    date: "2023-10-10",
+    remark: "Freelance Project",
+    amount: "$2,500",
+    currency: "USD",
+    type: "Credit",
+  },
 ];
 
-export default function TransactionTableView() {
-  return (
-    <main className="p-6">
-      <h1 className="text-xl font-bold mb-4">Transactions</h1>
-      <TransactionTable
-        columns={columns}
-        data={sampleData as never}
-        loading={false}
-      />
-    </main>
-  );
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Transaction[]>
+) {
+  res.status(200).json(sampleData);
 }
 
